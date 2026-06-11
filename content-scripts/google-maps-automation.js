@@ -81,7 +81,7 @@ function getStarRatingAndReviewCount(linkContainer) {
 
 async function getPhoneNumber(index) {
 
-	const linkContainer = allLinks[index]
+	const linkContainer = allLinks[index];
 	const link = linkContainer.children[0];
 	link.focus(); link.click();
 
