@@ -86,6 +86,7 @@ goBtn.onclick = () => {
             "go": true,
             "type": "SIDEPANEL"
         }
+        
         chrome.tabs.sendMessage(tabID, message)
     })
 }

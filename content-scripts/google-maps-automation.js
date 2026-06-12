@@ -31,7 +31,7 @@ goButton.onclick = async () => {
 	
 	allLinks = await waitForManyElements(`[role="article"]`);
 
-	i === 0 && sendInfoToSidePanel("Minimum Star Rating --> ", MIN_ALLOWED_STAR_RATING) && sendInfoToSidePanel("", "");
+	// i === 0 && sendInfoToSidePanel("Minimum Star Rating --> ", MIN_ALLOWED_STAR_RATING) && sendInfoToSidePanel("", "");
 
 	console.log("Els: ", allLinks);
 
@@ -99,7 +99,7 @@ async function getPhoneNumber(index) {
 			addNumberToLocalStorage(storeCardPhoneNumber, storeCardName, searchBar.value);
 
 			saveToPhoneNumbersArray(storeCardPhoneNumber, storeCardName);
-			await sendInfoToSidePanel("(" + storeCardRating + " stars) " + storeCardPhoneNumber?.replace("(", "")?.replace(")", "")?.replace(" ", "")?.replace("-", ""), storeCardName);
+			await sendInfoToSidePanel(storeCardPhoneNumber?.replace("(", "")?.replace(")", "")?.replace(" ", "")?.replace("-", ""), storeCardName);
 		}
 		console.log(counter + ". " + storeCardPhoneNumber + " - " + storeCardName);
 	}

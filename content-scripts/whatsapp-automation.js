@@ -39,12 +39,17 @@ testButton.addEventListener("click", async () => {
 			await pastePhoneNumber(DummyNumbers[i]);
 			await sleep(1000);
 
-			const resultFound = await waitForElement(`[data-testid="cell-frame-container"]`);
-			let noResultsCheck = undefined;
+			
+			// const resultFound = await waitForElement(`[data-testid="cell-frame-container"]`);
+			// let noResultsCheck = undefined;
 
-			if(!resultFound) {
-				noResultsCheck = await waitForElement(`[data-testid="no-search-results"]`) // only present if no results found
-			}
+			// if(!resultFound) {
+			// 	noResultsCheck = await waitForElement(`[data-testid="no-search-results"]`) // only present if no results found
+			// }
+
+			
+			let noResultsCheck = document.querySelector(`[data-testid="no-search-results"]`) // only present if no results found
+
 
 			if(noResultsCheck) { 
 				console.log("No Result Found For: " + DummyNumbers[i])
@@ -58,9 +63,9 @@ testButton.addEventListener("click", async () => {
 				// await typeMessage("*Ignore this automated letter just checking something's working*");
 
 				if(!hasMessagedBefore()) {
-					await pasteMessage("Hi goodnight");
+					await pasteMessage("Hey goodmorning");
 					await sleep(1000);
-					// await sendMessage();
+					await sendMessage();
 					// await saveContact();
 				}
 
@@ -100,7 +105,7 @@ function getNumberButtons() {
 	}
 }
 
-let tries = 0;
+let tries = 25;
 
 async function waitForElement(selector) { 
     const element = document.querySelector(selector);
