@@ -105,7 +105,7 @@ function getNumberButtons() {
 	}
 }
 
-let tries = 25;
+let tries = 0;
 
 async function waitForElement(selector) { 
     const element = document.querySelector(selector);
@@ -351,5 +351,46 @@ function hasMessagedBefore() {
 
 
 
+(async function findOnGoogle() {
+
+	await sleep(2000);
+
+	const chatList = await waitForElement(`[aria-label="Chat list"]`);
+
+	console.log("Chat list: ", chatList);
+
+	const chats = chatList.querySelectorAll(`[role="row"]`);
+
+	Array.from(chats).forEach(async (chat) => {
+
+		chat.onclick = async () => {
+
+			console.log("Lawn Mower")
 
 
+			await sleep(200);
+			const chatHeader = await waitForElement(`[data-testid="conversation-info-header-chat-title"]`);
+			const chatName = chatHeader.innerText;
+			const btn = document.createElement("button");
+			btn.id = "#find-on-google-btn";
+			btn.innerText = "Find On Google"
+
+			chatHeader.appendChild(btn);
+
+
+			btn.onclick = () => {
+
+				const anchor = document.createElement("a");
+				anchor.href = `https://google.com/search?q=${chatName}`;
+				anchor.target = "_blank";
+				anchor.click();
+				
+			}
+		}
+
+		
+	})
+
+
+
+})();

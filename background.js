@@ -11,9 +11,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log("Background Message: ", message)
 
     }
-    else if(message.type === "GOOGLE_SEARCH") {
-        chrome.tabs.create({ url: `https://google.com/search?q=${message.searchQuery}` });
-    }
 })
 
 

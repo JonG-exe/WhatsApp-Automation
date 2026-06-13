@@ -241,17 +241,3 @@ async function addNumberToLocalStorage(storeNumber, storeName, searchQuery) {
 
 	}
 }
-
-// ------------------------------------------------ Find On Google ------------------------------------------------
-
-(function findOnGoogle() {
-    const btn = document.querySelector("#find-on-google-btn");
-
-    btn.onclick = () => {
-
-        chrome.runtime.sendMessage({searchQuery: "MIGRATION", type: "GOOGLE_SEARCH" }, (res) => {
-            console.log("SENT: MIGRATION")
-        })
-    }
-
-})();
