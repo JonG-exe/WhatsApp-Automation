@@ -10,6 +10,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         console.log("Background Message: ", message)
 
+        if(message.sendMessage !== null) {
+            chrome.tabs.query({}, (tabs) => {
+                const foundTab = tabs.find(tab => tab.url.includes("web.whatsapp.com/"))
+
+                chrome.tabs.sendMessage(foundTab.id, message)
+            })
+        }
+
     }
 })
 

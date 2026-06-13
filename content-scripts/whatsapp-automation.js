@@ -2,23 +2,24 @@
 
 let stopped = false;
 let testButton = document.createElement("button");
+let allowSendMessage = false;
 let prevPhoneNumberLength = 0;
-let DummyNumbers = [];
+let DummyNumbers = [8687431018, 8687489524];
 let i = 0;
 
-testButton.textContent = "Test Button";
-Object.assign(testButton.style, {
-    backgroundColor: `rgb(217, 253, 211)`,
-    borderRadius: `8px`,
-    padding: `8px`,
-    position: `fixed`,
-    bottom: `90px`,
-    right: `40px`,
-    zIndex: `1000`,
-    border: `1px solid green`,
-    boxShadow: `4px 4px 2px rgba(0, 0, 0, 0.1)`,
-})
-document.body.appendChild(testButton);
+// testButton.textContent = "Test Button";
+// Object.assign(testButton.style, {
+//     backgroundColor: `rgb(217, 253, 211)`,
+//     borderRadius: `8px`,
+//     padding: `8px`,
+//     position: `fixed`,
+//     bottom: `90px`,
+//     right: `40px`,
+//     zIndex: `1000`,
+//     border: `1px solid green`,
+//     boxShadow: `4px 4px 2px rgba(0, 0, 0, 0.1)`,
+// })
+// document.body.appendChild(testButton);
 
 testButton.addEventListener("click", async () => {
 
@@ -39,17 +40,7 @@ testButton.addEventListener("click", async () => {
 			await pastePhoneNumber(DummyNumbers[i]);
 			await sleep(1000);
 
-			
-			// const resultFound = await waitForElement(`[data-testid="cell-frame-container"]`);
-			// let noResultsCheck = undefined;
-
-			// if(!resultFound) {
-			// 	noResultsCheck = await waitForElement(`[data-testid="no-search-results"]`) // only present if no results found
-			// }
-
-			
 			let noResultsCheck = document.querySelector(`[data-testid="no-search-results"]`) // only present if no results found
-
 
 			if(noResultsCheck) { 
 				console.log("No Result Found For: " + DummyNumbers[i])
@@ -62,12 +53,15 @@ testButton.addEventListener("click", async () => {
 				await sleep(1000);
 				// await typeMessage("*Ignore this automated letter just checking something's working*");
 
-				if(!hasMessagedBefore()) {
+				// if(!hasMessagedBefore()) {
 					await pasteMessage("Hey goodmorning");
 					await sleep(1000);
-					await sendMessage();
+
+					if(allowSendMessage) {
+						await sendMessage();
+					}
 					// await saveContact();
-				}
+				// }
 
 			}
 
@@ -316,6 +310,17 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 		}
 
 	}
+	else if(message.type === "BACKGROUND") {
+		if(message.sendMessage != null) {
+			
+			if(message.sendMessage) {
+				allowSendMessage = true;
+			}
+			else {
+				allowSendMessage = false;
+			}
+		}
+	}
 })
 
 function updateStatus(status) {
@@ -353,12 +358,8 @@ function hasMessagedBefore() {
 
 (async function findOnGoogle() {
 
-	await sleep(2000);
-
 	const chatList = await waitForElement(`[aria-label="Chat list"]`);
-
 	console.log("Chat list: ", chatList);
-
 	const chats = chatList.querySelectorAll(`[role="row"]`);
 
 	Array.from(chats).forEach(async (chat) => {
@@ -372,11 +373,12 @@ function hasMessagedBefore() {
 			const chatHeader = await waitForElement(`[data-testid="conversation-info-header-chat-title"]`);
 			const chatName = chatHeader.innerText;
 			const btn = document.createElement("button");
-			btn.id = "#find-on-google-btn";
+			btn.classList.add("find-on-google-btn");
 			btn.innerText = "Find On Google"
 
-			chatHeader.appendChild(btn);
-
+			const foundGoogleBtnAlready = document.querySelector(".find-on-google-btn")
+			foundGoogleBtnAlready && foundGoogleBtnAlready.remove();
+			document.body.appendChild(btn);
 
 			btn.onclick = () => {
 
@@ -384,13 +386,9 @@ function hasMessagedBefore() {
 				anchor.href = `https://google.com/search?q=${chatName}`;
 				anchor.target = "_blank";
 				anchor.click();
-				
+
 			}
 		}
-
-		
 	})
-
-
 
 })();

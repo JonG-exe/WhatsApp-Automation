@@ -241,3 +241,18 @@ async function addNumberToLocalStorage(storeNumber, storeName, searchQuery) {
 
 	}
 }
+
+
+//------------------------------------------- Allow Send Message ---------------------------------------------------
+
+const allowSendMessageCheckBox = document.querySelector("#allow-send-message-checkbox");
+
+allowSendMessageCheckBox.onchange = (e) => {
+    const checked = e.target.checked;
+    console.log("Changed");
+
+    chrome.runtime.sendMessage({ sendMessage: checked, type: "BACKGROUND" }, () => {
+
+        console.log("Sharingan!");
+    })
+}

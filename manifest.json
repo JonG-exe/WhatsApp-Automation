@@ -16,7 +16,8 @@
         },
         {
             "js": ["content-scripts/whatsapp-automation.js"],
-            "matches": ["https://web.whatsapp.com/*"]
+            "matches": ["https://web.whatsapp.com/*"],
+            "css": ["./css/whatsapp-automation-styles.css"]
         }
     ],
     "side_panel": {

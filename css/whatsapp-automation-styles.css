@@ -1,0 +1,14 @@
+.find-on-google-btn {
+    padding: 8px;
+    padding: 8px;
+    padding: 8px;
+    background-color: rgb(217, 253, 211);
+    border-radius: 8px;
+    padding: 8px;
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    z-index: 1000;
+    border: 1px solid green;
+    box-shadow: rgba(0, 0, 0, 0.1) 4px 4px 2px;
+}
