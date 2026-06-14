@@ -4,7 +4,7 @@ chrome.sidePanel
     
 console.log("Listener registered.");
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 
     if(message.type === "BACKGROUND") {
 
@@ -19,8 +19,50 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
 
     }
+    else if(message.type === "SIDEPANEL") {
+
+        console.log("JAX Message: ", message)
+        const m = message;
+
+        if(message.code === "add-num-to-crhrome-storage") {
+            console.log("Received num: ", message)
+            addNumberToChromeLocalStorage(m.phoneNumber, m.storeName, m.searchQuery);
+        }
+    }
 })
 
+
+async function addNumberToChromeLocalStorage(storeNumber, storeName, searchQuery) {
+
+	if(await chrome.storage.local.get("google-maps-scrape") === null) {
+
+		// create maps scrape storage
+
+		await chrome.storage.local.set({"google-maps-scrape": {
+			"maps-search-query": {
+				"restaurants near me": {
+					_EXAMPLE: "888-888-8888"
+				}
+			}
+		}})
+	}
+	else {
+
+		let googleMapsScrape = await chrome.storage.local.get("google-maps-scrape");
+        googleMapsScrape = googleMapsScrape["google-maps-scrape"];
+
+		if(googleMapsScrape["maps-search-query"][searchQuery] === undefined) {
+			googleMapsScrape["maps-search-query"][searchQuery] = {};
+		}
+		else {
+			googleMapsScrape["maps-search-query"][searchQuery][storeName] = storeNumber;
+		}
+
+		await chrome.storage.local.set({ "google-maps-scrape": googleMapsScrape });
+
+	}
+
+}
 
 // async function tabGroupsTest() {
     

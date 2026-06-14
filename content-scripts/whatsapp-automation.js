@@ -4,22 +4,8 @@ let stopped = false;
 let testButton = document.createElement("button");
 let allowSendMessage = false;
 let prevPhoneNumberLength = 0;
-let DummyNumbers = [8687431018, 8687489524];
+let DummyNumbers = [];
 let i = 0;
-
-// testButton.textContent = "Test Button";
-// Object.assign(testButton.style, {
-//     backgroundColor: `rgb(217, 253, 211)`,
-//     borderRadius: `8px`,
-//     padding: `8px`,
-//     position: `fixed`,
-//     bottom: `90px`,
-//     right: `40px`,
-//     zIndex: `1000`,
-//     border: `1px solid green`,
-//     boxShadow: `4px 4px 2px rgba(0, 0, 0, 0.1)`,
-// })
-// document.body.appendChild(testButton);
 
 testButton.addEventListener("click", async () => {
 
@@ -53,7 +39,7 @@ testButton.addEventListener("click", async () => {
 				await sleep(1000);
 				// await typeMessage("*Ignore this automated letter just checking something's working*");
 
-				// if(!hasMessagedBefore()) {
+				if(!hasMessagedBefore()) {
 					await pasteMessage("Hey goodmorning");
 					await sleep(1000);
 
@@ -61,8 +47,7 @@ testButton.addEventListener("click", async () => {
 						await sendMessage();
 					}
 					// await saveContact();
-				// }
-
+				}
 			}
 
 			i++;

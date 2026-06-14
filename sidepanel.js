@@ -22,6 +22,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
             updateStatusUi(message.status);
 
         }
+
     }
 })
 
@@ -174,73 +175,63 @@ async function sleep(ms) {
 
 
 
-
-
+//------------------------------------------- Find Number ---------------------------------------------------
 
 
 //// INCOMPLETE //// //// INCOMPLETE //// //// INCOMPLETE //// //// INCOMPLETE //// //// INCOMPLETE //// //// INCOMPLETE //// //// INCOMPLETE ////
 
 const findNumberInput = document.querySelector("#find-number-input");
 
-addNumberToLocalStorage();
-
-console.log("Found");
-
 findNumberInput.oninput = async () => {
 
-    console.log("Found chrome storage: ", chrome.storage)
     const searchedNumber = findNumberInput.value;
-    const googleMapsScrape = JSON.parse(await chrome.storage.local.get("google-maps-scrape"));
-
     const foundNumbers = document.querySelector("#found-numbers");
+    foundNumbers.innerText = "";
 
-    Object.keys(googleMapsScrape["maps-search-query"]).forEach(query => {   
-        Object.keys(googleMapsScrape["maps-search-query"][query]).forEach(companyName => {
+    let googleMapsScrape = await chrome.storage.local.get("google-maps-scrape");
+    googleMapsScrape = googleMapsScrape["google-maps-scrape"];
 
-            const companyNumber = googleMapsScrape["maps-search-query"][query][companyName];
+    console.log("googleMapsScrape: ", googleMapsScrape);
 
-            if(searchedNumber.includes(companyNumber.replace("-", "")))
+    // await chrome.storage.local.set( {"google-maps-scrape": 
+    // { 
+    //     check: true,
+    //     "maps-search-query": {
+    //         "restaurants near me": {
+    //             "_EXAMPLE": "8687431018"
+    //         }
+    //     }
+    // }});
 
 
-            console.log("Company Name: ", companyName)
-            console.log("Number: ", companyNumber);
-            console.log("-------------------------------------------");
+    if(googleMapsScrape) {
+        Object.keys(googleMapsScrape["maps-search-query"])?.forEach(query => {   
+            Object.keys(googleMapsScrape["maps-search-query"][query]).forEach(companyName => {
 
-            foundNumbers.innerText += companyName + " - " + companyNumber + "\n";
+                const companyNumber = googleMapsScrape["maps-search-query"][query][companyName];
+                const cleanedNumber = companyNumber.replace("-", "").replaceAll(" ", "").replace("(", "").replace(")", "");
+
+                console.log("RAGNAROK NUMBER: ", companyNumber)
+
+                if(searchedNumber.includes(cleanedNumber)) {
+                    console.log("Company Name: ", companyName);
+                    console.log("Number: ", companyNumber);
+                    console.log("-------------------------------------------");
+
+                    foundNumbers.innerText += companyName + " - " + companyNumber + "\n";
+                }
+            })
         })
-    })
+    }
+    else {
+        foundNumbers.innerText = "";
+        console.log(" ---- Google Maps Scrape Empty ---- ")
+    }
+
 }
 
 
-async function addNumberToLocalStorage(storeNumber, storeName, searchQuery) {
 
-	if(await chrome.storage.local.get("google-maps-scrape") === null) {
-		// create maps scrape storage
-		// localStorage.setItem("google-maps-scrape", JSON.stringify({}))
-
-		await chrome.storage.local.set("google-maps-scrape", JSON.stringify({
-			"maps-search-query": {
-				"restaurants near me": {
-					_EXAMPLE: "888-888-8888"
-				}
-			}
-		}))
-	}
-	else {
-
-		const googleMapsScrape = JSON.parse(await chrome.storage.local.get("google-maps-scrape"));
-
-		if(googleMapsScrape["maps-search-query"][searchQuery] === undefined) {
-			googleMapsScrape["maps-search-query"][searchQuery] = {};
-		}
-		else {
-			googleMapsScrape["maps-search-query"][searchQuery][storeName] = storeNumber;
-		}
-
-		await chrome.storage.local.set("google-maps-scrape", JSON.stringify(googleMapsScrape));
-
-	}
-}
 
 
 //------------------------------------------- Allow Send Message ---------------------------------------------------

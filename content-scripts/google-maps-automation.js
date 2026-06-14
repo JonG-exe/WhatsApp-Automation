@@ -96,7 +96,9 @@ async function getPhoneNumber(index) {
 	if(storeCardPhoneNumber) {
 		if(storeCardRating >= MIN_ALLOWED_STAR_RATING) {
 			searchBar = await waitForElement(`[role="combobox"]`);
+
 			addNumberToLocalStorage(storeCardPhoneNumber, storeCardName, searchBar.value);
+			sendNumToChromeStorage(storeCardPhoneNumber, storeCardName, searchBar.value);
 
 			saveToPhoneNumbersArray(storeCardPhoneNumber, storeCardName);
 			await sendInfoToSidePanel(storeCardPhoneNumber?.replace("(", "")?.replace(")", "")?.replace(" ", "")?.replace("-", ""), storeCardName);
@@ -112,6 +114,20 @@ async function getPhoneNumber(index) {
 	const vanished = await waitForElementToVanish(".bJzME.Hu9e2e.tTVLSc");
 	// vanished === null && console.log("");
 
+}
+
+//----------------------------------------------------------- Star Rating -----------------------------------------------------------------------
+
+async function sendNumToChromeStorage(num, name, query) {
+	chrome.runtime.sendMessage({
+		type: "SIDEPANEL",
+		code: "add-num-to-crhrome-storage",
+		phoneNumber: num,
+		storeName: name,
+		searchQuery: query
+	}, () => {
+		console.log("Sent.")
+	})
 }
 
 //----------------------------------------------------------- Star Rating -----------------------------------------------------------------------
