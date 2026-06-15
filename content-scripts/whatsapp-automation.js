@@ -161,6 +161,8 @@ async function pasteMessage(message) {
 		messageInput.click();
 		messageInput.focus();
 		await sleep(100);
+		document.execCommand("selectAll");
+		await sleep(100);
 		document.execCommand("insertText", false, message);
 	}
 	
