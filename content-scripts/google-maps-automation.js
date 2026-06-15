@@ -126,7 +126,7 @@ async function sendNumToChromeStorage(num, name, query) {
 		storeName: name,
 		searchQuery: query
 	}, () => {
-		console.log("Sent.")
+		console.log("Number Sent.")
 	})
 }
 

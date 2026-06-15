@@ -6,26 +6,26 @@ console.log("Listener registered.");
 
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 
-    if(message.type === "BACKGROUND") {
+    const m = message;
 
-        console.log("Background Message: ", message)
+    if(m.type === "BACKGROUND") {
 
-        if(message.sendMessage !== null) {
+        console.log("Background Message: ", m)
+
+        if(m.sendMessage !== null) {
             chrome.tabs.query({}, (tabs) => {
                 const foundTab = tabs.find(tab => tab.url.includes("web.whatsapp.com/"))
 
-                chrome.tabs.sendMessage(foundTab.id, message)
+                chrome.tabs.sendMessage(foundTab.id, m)
             })
         }
 
     }
-    else if(message.type === "SIDEPANEL") {
+    else if(m.type === "SIDEPANEL") {
 
-        console.log("JAX Message: ", message)
-        const m = message;
 
-        if(message.code === "add-num-to-crhrome-storage") {
-            console.log("Received num: ", message)
+        if(m.code === "add-num-to-crhrome-storage") {
+            console.log("Received num: ", m)
             addNumberToChromeLocalStorage(m.phoneNumber, m.storeName, m.searchQuery);
         }
     }

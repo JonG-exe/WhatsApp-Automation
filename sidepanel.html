@@ -98,8 +98,8 @@
             margin-bottom: 10px;
         }
         #phone-numbers-section {
-            max-height: 300px;
-            min-height: 300px;
+            max-height: 100px;
+            min-height: 100px;
             background-color: white;
             border: 1px solid green;
             overflow-y: auto;
@@ -121,6 +121,26 @@
         #allow-send-message-checkbox {
             margin-left: 8px;
         }
+
+        #find-number {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        #find-number input,
+        #find-number textarea {
+            width: 95%;
+            padding: 8px 4px;
+            margin-top: 8px;
+        }
+
+        #find-number textarea {
+            height: 175px;
+        }
+        #found-numbers {
+            padding: 20px 0px;
+        }
     </style>
 </head>
 <body>
@@ -135,9 +155,14 @@
     </section>
 
     <section class="whatsapp">
-        <button id="open-whatsapp-btn">Open WhatsApp</button>
-        <button id="run-whatsapp-btn">Run WhatsApp</button>
+        <button id="open-whatsapp-btn">Open W.App</button>
+        <button id="run-whatsapp-btn">Run W.App</button>
         <button id="stop-whatsapp-btn">Stop Messaging</button>
+    </section>
+
+    <section id="allow-send-message">
+        <label for="allow-send-message-checkbox">Send Messages</label>
+        <input type="checkbox" name="allow-send-message-checkbox" id="allow-send-message-checkbox">
     </section>
 
     <section id="status-and-utilities">
@@ -151,14 +176,15 @@
     </section>
 
     <section id="find-number">
-        <input type="text" name="" id="find-number-input">
-        <textarea id="found-numbers"></textarea>
+        <h4>Find Company By Number</h4>
+        <select name="" id="select-map-search-query" >
+            <option>--- Select A Query ---</option>
+        </select>
+        <input type="text" name="" id="find-number-input" placeholder="Enter phone #">
+        <div id="found-numbers"></div>
     </section>
 
-    <section id="allow-send-message">
-        <label for="allow-send-message-checkbox">Send Messages</label>
-        <input type="checkbox" name="allow-send-message-checkbox" id="allow-send-message-checkbox">
-    </section>
+
 
     <script src="./sidepanel.js"></script>
 

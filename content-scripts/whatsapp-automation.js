@@ -273,6 +273,8 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 		if(message["run-whatsapp"]) {
 			console.log("Message: ", message)
 
+			DummyNumbers = [];
+
 			message.allPhoneNumbers.filter(num => {
 				if(num !== "undefined" && num !== null) {
 					DummyNumbers.push(num);

@@ -1,4 +1,4 @@
-const allPhoneNumbers = [];
+let allPhoneNumbers = [];
 
 //----------------------------------- Message Listener  --------------------------------------
 
@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
             newNum.textContent = `${message.phoneNumber} - ${message.storeName}`;
 
             phoneNumbers.appendChild(newNum);
-            allPhoneNumbers.push(message.phoneNumber)
+            allPhoneNumbers.push(message.phoneNumber);
         }
         else if(message.code === "status") {
 
@@ -188,6 +188,8 @@ findNumberInput.oninput = async () => {
     const foundNumbers = document.querySelector("#found-numbers");
     foundNumbers.innerText = "";
 
+    if(searchedNumber === "") return;
+
     let googleMapsScrape = await chrome.storage.local.get("google-maps-scrape");
     googleMapsScrape = googleMapsScrape["google-maps-scrape"];
 
@@ -205,6 +207,9 @@ findNumberInput.oninput = async () => {
 
 
     if(googleMapsScrape) {
+
+        const numbersToDisplay = [];
+
         Object.keys(googleMapsScrape["maps-search-query"])?.forEach(query => {   
             Object.keys(googleMapsScrape["maps-search-query"][query]).forEach(companyName => {
 
@@ -213,15 +218,18 @@ findNumberInput.oninput = async () => {
 
                 console.log("RAGNAROK NUMBER: ", companyNumber)
 
-                if(searchedNumber.includes(cleanedNumber)) {
+                if(cleanedNumber.startsWith(searchedNumber)) {
                     console.log("Company Name: ", companyName);
                     console.log("Number: ", companyNumber);
                     console.log("-------------------------------------------");
 
-                    foundNumbers.innerText += companyName + " - " + companyNumber + "\n";
+                    numbersToDisplay.push(companyNumber + " - " + companyName)
                 }
             })
         })
+
+        foundNumbers.innerHTML += numbersToDisplay.map(num => `<div>${num}</div>`).join("<br>");
+        
     }
     else {
         foundNumbers.innerText = "";
@@ -247,3 +255,45 @@ allowSendMessageCheckBox.onchange = (e) => {
         console.log("Sharingan!");
     })
 }
+
+//------------------------------------------- Select Map Search Query ---------------------------------------------------
+
+
+(async function setSelectQueryInputs() {
+    const selectQueryInput = document.querySelector("#select-map-search-query");
+
+    let googleMapsScrape = await chrome.storage.local.get("google-maps-scrape");
+    googleMapsScrape = googleMapsScrape["google-maps-scrape"];
+
+    const mapsQueries = googleMapsScrape["maps-search-query"];
+
+    Object.keys(mapsQueries).forEach(query => {
+        console.log("Query: ", query)
+
+        const option = document.createElement("option");
+        option.innerText = query;
+
+        selectQueryInput.appendChild(option);
+    })
+
+    selectQueryInput.onchange = (e) => {
+
+        const foundQuery = Object.keys(googleMapsScrape["maps-search-query"][e.target.value]);
+        const phoneNumbers = document.querySelector(".phone-numbers");
+
+        phoneNumbers.innerHTML = "";
+        allPhoneNumbers = [];
+
+        foundQuery.forEach(storeName => {
+
+            const storePhoneNumber = googleMapsScrape["maps-search-query"][e.target.value][storeName];
+            const newNum = document.createElement("div");
+            newNum.textContent = `${storePhoneNumber} - ${storeName}`;
+
+            phoneNumbers.appendChild(newNum);
+            allPhoneNumbers.push(storePhoneNumber);
+
+        })
+    }
+
+})();
