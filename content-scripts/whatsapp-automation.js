@@ -293,7 +293,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 		}
 		if(message.code === "stop-messaging") {
 			stopWhatsapp();
-			updateStatus("Stopped WhatsApp Messaging...")
+			updateStatus("Stopped Messaging...")
 		}
 
 	}

@@ -90,12 +90,17 @@
             background: #EAF3DE;
             border-color: #C0DD97;
             color: #3B6D11;
+            transition: all 0.1s;
 
                                     background-color: rgb(217, 253, 211);
                                     border-radius: 8px;
                                     padding: 8px;
                                     border: 1px solid green;
                                     box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.1);
+        }
+        button:active {
+            scale: 0.95;
+            transition: all 0.2s;
         }
         button.primary:hover {
             /* background: #d6ebbc; */
@@ -108,7 +113,7 @@
             border-color: #ddd;
         }
         button.stop:hover {
-            background: #ebebeb;
+            background: #d6d6d6;
         }
         .toggle-row {
             display: flex;
@@ -258,6 +263,8 @@
             font-size: 12px;
             color: #666;
             margin-top: 4px;
+            max-height: 180px;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -272,7 +279,7 @@
     <div class="card">
         <p class="card-label">Google Maps</p>
         <div class="btn-group">
-            <button class="primary" id="open-maps"><i class="ti ti-map-2"></i> Open Maps</button>
+            <button class="primary" id="open-maps"><i class="ti ti-map-2"></i> Open </button>
             <button class="primary" id="go-btn"><i class="ti ti-player-play"></i> Go</button>
             <button class="stop" id="stop-maps-btn"><i class="ti ti-player-stop"></i> Stop</button>
         </div>
